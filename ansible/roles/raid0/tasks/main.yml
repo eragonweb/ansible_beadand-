@@ -1,0 +1,33 @@
+---
+- name: Madam telepites
+  package:
+    name: mdadm
+    state: present
+  become: true
+  notify: RAID ujrainditas
+
+- name: RAID0 tomb keszites
+  become: true
+  ansible.builtin.shell: |
+    mdadm --create --verbose /devv/md0 --level=0 --raid-devices=2 /dev/sda /dev/sdb
+  args: 
+    creates: /dev/md0
+
+- name: Raid0 fajlrendszer keszitese
+  become: true
+  ansible.builtin.filesystem:
+    fstype: ext4
+    dev: /dev/md0
+
+- name: kotesipont kialaakitasa
+  ansible.builtin.file:
+    path: /mnt/raid0
+    state: directory
+
+- name: mountolas
+  ansible.posix.mount:
+    path: /mnt/raid0
+    src: /dev/md0
+    fstype: ext4
+    state: mounted
+

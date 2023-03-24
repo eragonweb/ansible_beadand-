@@ -1,0 +1,10 @@
+---
+mdadm_arrays:
+  -name: 'md0'
+   devices:
+     - '/dev/sda'
+     - '/dev/sdb'
+   filesytem: 'ext4'
+   level: 0
+   mountpoint: '/mnt/md0'
+   state: 'present'

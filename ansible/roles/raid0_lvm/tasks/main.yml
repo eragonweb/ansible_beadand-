@@ -1,0 +1,27 @@
+---
+- name: Csomag telepitese ha RedHat
+  ansible.builtin.yum:
+    name:
+      - lvm2
+    state: present
+  when: "'ansible_os_family' == 'RedHat'" #`
+
+- name: Csomag telepitese ha Debian
+  ansible.builtin.apt:
+    name:
+      - lvm2
+    state: present
+  when: "'ansible_os_family' == 'Debian'"
+
+- name: PV letrehozas
+  community.general.lvg:
+    vg: "{{ lvm_raid0_vg }}"
+    pvs: "{{ lvm_raid0_pv_lemezek }}"
+    
+- name: LV letrehozasa Raid0-ban
+  community.general.lvol_stripes:
+    vg: "{{ lvm_raid0_vg }}"
+    lv: "{{ lvm_raid0_lv }}"
+    size: 100%FREE
+    stripes: "{{ lvm_raid0_pv_lemezek | length }}"
+    strip_size: 50

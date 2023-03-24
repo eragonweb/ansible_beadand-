@@ -1,0 +1,7 @@
+---
+lvm_raid0_pv_lemezek:
+ - /dev/sda
+ - /dev/sdb
+
+lvm_raid0_vg: vg0
+lvm_raid0_lv: lv0

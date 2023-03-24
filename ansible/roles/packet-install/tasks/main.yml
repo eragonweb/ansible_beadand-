@@ -1,0 +1,7 @@
+--- 
+- name: Csomag telepito
+  become: true
+  package:
+    name: "{{ csomag_neve }}"
+    state: present 
+

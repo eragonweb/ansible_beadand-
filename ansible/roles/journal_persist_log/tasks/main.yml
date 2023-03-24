@@ -1,0 +1,28 @@
+---
+- name: Letezik e a /var/log/journal
+  ansible.builtin.stat:
+   path: /var/log/journal
+  register: journal_dir
+
+- name: Letrehozas ha nincs meg ilyen 
+  ansible.builtin.file:
+   path: /var/log/journal
+   state: directory
+   owner: root
+   group: systemd-journal
+   mode: 2755
+  when: not journal_dir.stat.exists
+
+- name: Journald konfiguracio modositasa hogy permenens legyen 
+  ansible.builtin.lineinfile:
+    path: "{{ journald_config_file }}"
+    regexp: "^Storage="
+    line: "Storage=persistent"
+  notify: Journald ujraindit
+
+- name: MaxUse beállitása
+  ansible.builtin.lineinfile:
+    path: "{{ journald_config_file }}"
+    regexp: "^SystemMaxUse="
+    line: "SystemMaxUse=1G"
+  notify: Journald ujraindit

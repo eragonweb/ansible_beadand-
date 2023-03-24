@@ -1,0 +1,2 @@
+[serverB]
+192.168.10.2 ansible_sudo_pass=redhat ansible_ssh_user=root

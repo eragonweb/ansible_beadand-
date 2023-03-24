@@ -1,0 +1,4 @@
+---
+- name: RAID ujrainditas
+  ansible.builtin.shell: "mdadm --asseble --scan"
+  become: true
