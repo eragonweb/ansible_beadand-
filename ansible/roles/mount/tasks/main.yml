@@ -1,0 +1,22 @@
+---
+- name: UUID megkeresese
+  ansible.builtin.command: blkid -o value -s UUID /dev/sdc
+  register: eszkoz_uuid
+  changed_when: false
+
+- name: mount pont letrehozasa
+  ansible.builtin.file:
+    path: /data/speci
+    state: directory
+
+- name: mount az fstab-ba
+  ansible.builtin.lineinfile:
+    dest: /etc/fstab
+    regexp: '^UUID={{ eszkoz_uuid.stdout }}'
+    line: 'UUID={{ eszkoz_uuid.stdout }} /data/speci ext4 defaults 0 0'
+    state: present
+  become: true
+
+- name: Mountolas frissitese
+  ansible.builtin.command: mount -a
+  become: true
