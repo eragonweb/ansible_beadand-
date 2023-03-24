@@ -8,6 +8,7 @@
    # - raid0_lvm
    # - raid0
     - mdadm
+    - mount
     - journal_persist_log
     - packet-install
    
